@@ -1,0 +1,6 @@
+virtualenv
+boards
+stamps
+.DS_Store
+.idea/
+stampboards/*
