@@ -46,21 +46,34 @@ if __name__ == "__main__":
         sys.exit()
 
     (board_height, board_width) = stamp_board.size
-    margin = 77
+    stroke_width = 1
+    margin_x = 77
+    margin_y = 75
     stamp_height = 373
-    stamp_width = 701
+    stamp_width = 700
 
     # Stamp boards layout is 21 63,5 x 38,1 mm
     for x in range(0, 3):
         for y in range(0, 7):
-            left = x * stamp_width + x * margin + 5
-            top = y * stamp_height + y * margin + 5
-            right = left + stamp_width - 5
-            bottom = top + stamp_height - 5
+
+            # extract individual stamps
+            left = x * stamp_width + x * margin_x + 2 * (x + 1) * stroke_width
+            top = y * stamp_height + y * margin_y + 2 * (y + 1) * stroke_width
+            right = left + stamp_width
+            bottom = top + stamp_height
             cropped = stamp_board.crop((left, top, right, bottom))
+
+            # extract barcode only
+            left = 437
+            top = 68
+            right = left + 216
+            bottom = top + 216
+
+            bar_code = cropped.crop((left, top, right, bottom))
+
             (filename, extension) = os.path.splitext(jpg)
             stamp_filename = "./stamps/%s_%s%s%s" % (os.path.basename(filename), x + 1, y + 1, extension)
-            cropped.save(stamp_filename)
+            bar_code.save(stamp_filename)
 
 
 
